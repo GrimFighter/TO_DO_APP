@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TO-DO APP</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1 class="header">Create ~ Plan ~ Repeat</h1>
+    <div class="date"></div>
+    <div class="notes">
+        <% if (locals.notes && locals.notes.length > 0) { %>
+            <% locals.notes.forEach((note, index) => { %>
+                <div class="note-item">
+                    <input type="checkbox" id="note-<%= index %>" class="note-checkbox" data-index="<%= index %>">
+                    <h1 class="note-text" id="note-text-<%= index %>"><%= note %></h1>
+                </div>
+            <% }); %>
+        <% } %>
+    </div>
+
+    <div class="form">
+        <form action="/" method="post">
+            <input type="text" id="textbox" name="textbox">
+            <button type="submit">Add</button>
+        </form>
+    </div>
+
+    <script>
+        window.onload = function() {
+            let now = new Date();
+
+            const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+            let month = months[now.getMonth()];
+            let date = now.getDate();
+            let day = days[now.getDay()];
+
+            const docu = document.querySelector(".date");
+
+            let h1 = document.createElement("h1");
+            h1.textContent = `${day}, ${date} ${month}`;
+            docu.appendChild(h1);
+
+            // Add event listeners to checkboxes
+            document.querySelectorAll('.note-checkbox').forEach((checkbox) => {
+                checkbox.addEventListener('change', function() {
+                    const index = this.getAttribute('data-index');
+                    const noteText = document.getElementById(`note-text-${index}`);
+                    if (this.checked) {
+                        noteText.style.textDecoration = 'line-through';
+                    } else {
+                        noteText.style.textDecoration = 'none';
+                    }
+                });
+            });
+        };
+    </script>
+</body>
+
+</html>
